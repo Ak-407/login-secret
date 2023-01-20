@@ -1,0 +1,10 @@
+
+/*  /index.html 200
+
+The last thing we have to do is add the below option in our angular.json und er projects > {your_project_name} > architect > options > assets. Include it in the assets array:
+
+{
+  "glob": "_redirects",
+  "input": "src",
+  "output": "/"
+}
