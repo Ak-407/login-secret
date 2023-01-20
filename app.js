@@ -40,7 +40,7 @@ const UserSchema = mongoose.Schema({
   password:String,
   googleId:String,
   facebookId: String,
-  secline: String
+  secretline: String
 });
 
 UserSchema.plugin(passportLocalMongoose);
@@ -63,7 +63,7 @@ passport.deserializeUser(function(user, done) {
 
 passport.use(new GoogleStrategy({
   clientID: process.env.GOOGLE_CLIENT_ID,
-  clientSec: process.env.GOOGLE_CLIENT_SEC,
+  clientSecret: process.env.GOOGLE_CLIENT_SEC,
   callbackURL: "http://localhost:3000/auth/google/secrets",
   userProfileURL: "https://googleapis.com/aouth2/v3/userinfo"
 },
@@ -76,7 +76,7 @@ function(accessToken, refreshToken, profile, cb) {
 
 passport.use(new FacebookStrategy({
   clientID: process.env.FACEBOOK_APP_ID,
-  clientSec: process.env.FACEBOOK_APP_SEC,
+  clientSecret: process.env.FACEBOOK_APP_SEC,
   callbackURL: "http://localhost:3000/auth/facebook/secrets"
 },
 function(accessToken, refreshToken, profile, cb) {
@@ -140,7 +140,7 @@ app.post("/register", function(req,res){
 app.get("/secrets", function(req, res){
   if(req.isAuthenticated()){
     // res.render("secrets");
-    user.find({"secline": {$ne: null}}, function(err, founditem){
+    user.find({"secretline": {$ne: null}}, function(err, founditem){
       if(err){
         console.log(err);
       }
@@ -185,11 +185,11 @@ app.get("/submit", function(req,res){
 })
 
 app.post("/submit", function(req,res){
-  const secline = req.body.secret;
-  console.log(secline);
+  const secretline = req.body.secret;
+  console.log(secretline);
   if(req.isAuthenticated()){
     const newitem = new user({
-      secline:secline
+      secretline:secretline
     });
     newitem.save();
     res.redirect("/secrets");
